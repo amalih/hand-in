@@ -4,9 +4,11 @@
 from keras.models import Model
 from keras.models import load_model
 from keras.applications.vgg16 import VGG16
-from keras.layers import Flatten, Dense, Dropout
+from keras.layers import Flatten, Dense, Dropout, Input, Conv2D, MaxPooling2D
 from keras.regularizers import l2
 from keras.optimizers import Adam
+from keras.utils.data_utils import get_file
+from keras import backend as K
 
 WEIGHTS_PATH_NO_TOP = 'https://github.com/fchollet/deep-learning-models/releases/download/v0.1/vgg16_weights_tf_dim_ordering_tf_kernels_notop.h5'
 
@@ -24,7 +26,7 @@ def VGG16_WIDE():
 
     # Block 2
     x = Conv2D(128, (3, 3), activation='relu', padding='same', name='block2_conv1')(x)
-    x = Conv2D(128, (3, 3), activation='relu', padaccuracyding='same', name='block2_conv2')(x)
+    x = Conv2D(128, (3, 3), activation='relu', padding='same', name='block2_conv2')(x)
     x = MaxPooling2D((2, 2), strides=(2, 2), name='block2_pool')(x)
 
     # Block 3
@@ -32,7 +34,7 @@ def VGG16_WIDE():
     x = Conv2D(256, (3, 3), activation='relu', padding='same', name='block3_conv2')(x)
     x = Conv2D(256, (3, 3), activation='relu', padding='same', name='block3_conv3')(x)
     x = MaxPooling2D((2, 2), strides=(2, 2), name='block3_pool')(x)
-
+    
     # Block 4
     x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block4_conv1')(x)
     x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block4_conv2')(x)
