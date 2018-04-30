@@ -10,7 +10,7 @@ from keras.optimizers import Adam
 
 WEIGHTS_PATH_NO_TOP = 'https://github.com/fchollet/deep-learning-models/releases/download/v0.1/vgg16_weights_tf_dim_ordering_tf_kernels_notop.h5'
 
-def VGG16_WIDE:
+def VGG16_WIDE():
     # Create the base pre-trained model
     K.set_image_dim_ordering('tf')
 
