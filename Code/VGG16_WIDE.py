@@ -56,9 +56,9 @@ def VGG16_WIDE:
 
     # Regression layers
     x = Dense(1000, activation='relu', name='fc1', W_regularizer=l2(0.0001))(x)
-    x = Dense(200, activation='relu', name='fc2', W_regularizer=l2(0.0001))(x)
     x = Dropout(0.5)(x)
-
+    x = Dense(200, activation='relu', name='fc2', W_regularizer=l2(0.0001))(x)
+    
     predictions = Dense(1)(x)
 
     model = Model(input=base_model.input, output=predictions)
