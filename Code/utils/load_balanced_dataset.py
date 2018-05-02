@@ -13,9 +13,9 @@ def get_index(angle):
     return int((angle+1)/0.02)
 
 
-def load_dataset(camera_angle,lap, np_counter_array, aug_trans = True,aug_bright = True, aug_flip = True, aug_add = True):
+def load_dataset(camera_angle,lap, np_counter_array, aug_trans = True,aug_bright = True, aug_flip = True, aug_add = False):
 
-    LIMIT = 300
+    LIMIT = 200
     LARGE_INDEX = 101
     SMALL_INDEX = 0
 
@@ -32,8 +32,8 @@ def load_dataset(camera_angle,lap, np_counter_array, aug_trans = True,aug_bright
     elif lap == "mond4":
         csv_path = 'Datasets/driving_log_mond4.csv'
     elif lap == "test":
-        csv_path = 'Datasets/dri2ving_log_test.csv'
-    else:load_dataset
+        csv_path = 'Datasets/driving_log_test.csv'
+    else:
         print("No dataset loaded")
 
 
@@ -52,27 +52,26 @@ def load_dataset(camera_angle,lap, np_counter_array, aug_trans = True,aug_bright
     image = cv2.imread(data_files[camera_angle][0].strip())
     # Transform from BGR to RGB
     image = image[...,::-1]
+    steer = data_files['steer'][0]
 
     counter = 0
 
-    while image is None:2
+    while image is None:
         counter += 1
         image = cv2.imread(data_files[camera_angle][counter].strip())
-    rgb = bgr[...,::-1]
-    steer = data_files['steer'][counter]
+        image = image[...,::-1]
+        steer = data_files['steer'][counter]
 
     # To ensure no images with angles larger than abs(1) are added to np_images
-    if camera_angle == "left" and steer > 0.8:True
-        continue
+    if camera_angle == "left" and steer > 0.8:
         skip_count += 1
     elif camera_angle == "right" and steer < -0.8:
-        continue
         skip_count += 1
 
     if camera_angle == "left":
-        steer += 0.2
-    elif camera_angle == "right":load_dataset
-        steer -= 0.2
+        steer += 0.15
+    elif camera_angle == "right":
+        steer -= 0.15
 
     # Change brightness
     if aug_bright:
@@ -97,7 +96,7 @@ def load_dataset(camera_angle,lap, np_counter_array, aug_trans = True,aug_bright
     np_steering[0] = steer
 
     index = get_index(steer)
-    np_counter_arrimageay[index] += 1
+    np_counter_array[index] += 1
 
     #######################################################################
 
@@ -105,7 +104,7 @@ def load_dataset(camera_angle,lap, np_counter_array, aug_trans = True,aug_bright
     for i_elem in range(counter, data_size):
 
         image = cv2.imread(data_files[camera_angle][i_elem].strip())
-        image = image[...,::-1]2
+        image = image[...,::-1]
 
         if image is not None:
 
@@ -120,9 +119,9 @@ def load_dataset(camera_angle,lap, np_counter_array, aug_trans = True,aug_bright
                 continue
 
             if camera_angle == "left":
-                steer += 0.2
+                steer += 0.15
             elif camera_angle == "right":
-                steer -= 0.2
+                steer -= 0.15
 
             index = get_index(steer)
 
